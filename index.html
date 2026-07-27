@@ -83,7 +83,7 @@
   .login-inner{max-width:1120px;margin:0 auto;padding:60px 34px}
   .login-inner h2{font-family:var(--f-head);color:#fff;font-size:26px;text-align:center;margin:6px 0 4px}
   .login-inner .sub{font-family:var(--f-body);color:#b9cbe0;text-align:center;font-size:17px;margin:0 auto 34px;max-width:560px}
-  .roles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
   .role{background:#fff;border-radius:14px;padding:24px 22px;text-align:left;box-shadow:var(--shadow-lg);transition:transform .15s}
   .role:hover{transform:translateY(-4px)}
   .role .tag{width:46px;height:46px;border-radius:12px;color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--f-head);font-weight:800;font-size:19px;margin-bottom:15px}
@@ -209,7 +209,7 @@
 </style>
 </head>
 <body>
-<div class="ribbon">Interactive <b>prototype for discussion</b> · illustrative names &amp; data only, not a live system</div>
+<div class="ribbon">Interactive <b>prototype for discussion</b> · illustrative charter data, not a live system</div>
 <div id="home"></div>
 <div id="signin" style="display:none;position:fixed;inset:0;z-index:80;background:rgba(28,53,94,.55);align-items:center;justify-content:center;padding:20px"><div style="background:#fff;border-radius:14px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden"><div class="gradbar"></div><div style="padding:24px"><div id="siRole" style="font-family:var(--f-head);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--salmon);margin-bottom:6px"></div><h3 style="font-family:var(--f-head);margin:0 0 4px;color:var(--navy);font-size:20px">Sign in to RTCC</h3><p class="serif" style="margin:0 0 16px;color:var(--muted);font-size:14px">The portal is login-protected — each account only ever sees its own data.</p><div class="filter" style="margin-bottom:10px"><label>Email</label><input id="siEmail" style="border:1px solid var(--line);border-radius:7px;padding:9px;font-family:var(--f-ui);font-size:13px" readonly></div><div class="filter" style="margin-bottom:16px"><label>Password</label><input type="password" value="demo-prototype" readonly style="border:1px solid var(--line);border-radius:7px;padding:9px;font-family:var(--f-ui);font-size:13px"></div><div style="display:flex;gap:8px"><button class="btn" style="flex:1" onclick="doSignIn()">Sign in</button><button class="btn ghost" onclick="closeSignIn()">Cancel</button></div><div class="muted" style="font-size:11.5px;margin-top:12px">Prototype: credentials are pre-filled and not checked. In the real platform this is a secure login with per-partner scoping.</div></div></div></div>
 <div id="app">
@@ -265,6 +265,20 @@ function cprlLogo(mode){const rev=mode.includes('rev');const formal=mode.include
   const wm=`<span class="wm" style="font-size:16px">Center <span class="lt">for</span> Public<br>Research <span class="lt">and</span> Leadership</span>`;
   return `<span class="logo ${rev?'rev':''}">${cprlMark(h)}${acr}${formal?`<span class="divider"></span>${wm}`:''}</span>`;}
 
+/* RTCC brand mark — simplified book/building icon in the collective's colours */
+function rtccMark(h){const w=Math.round(h*1.12);return `<svg width="${w}" height="${h}" viewBox="0 0 45 40" fill="none" aria-hidden="true" style="display:block;flex:0 0 auto">
+<ellipse cx="23" cy="36.4" rx="16" ry="2.3" fill="#1C355E" opacity=".13"/>
+<rect x="5" y="14" width="10" height="20" rx="1.6" fill="#00A0DD" stroke="#1C355E" stroke-width="1.7"/>
+<rect x="7.6" y="17.6" width="2.3" height="2.3" fill="#1C355E"/><rect x="7.6" y="22" width="2.3" height="2.3" fill="#1C355E"/><rect x="7.6" y="26.4" width="2.3" height="2.3" fill="#1C355E"/>
+<rect x="30" y="18" width="9" height="16" rx="1.6" fill="#EC86B7" stroke="#1C355E" stroke-width="1.7"/>
+<rect x="14" y="9" width="14" height="25" rx="1.6" fill="#F5A623" stroke="#1C355E" stroke-width="1.7"/>
+<path d="M17.5 34 v-9 a3.5 3.5 0 0 1 7 0 v9 z" fill="#fff" stroke="#1C355E" stroke-width="1.5"/>
+<rect x="9" y="29" width="12" height="5" rx="1.4" fill="#B49CE0" stroke="#1C355E" stroke-width="1.7"/>
+<line x1="21" y1="9" x2="21" y2="3.4" stroke="#1C355E" stroke-width="1.6"/>
+<path d="M21 4 l5 1.5 -5 1.6 z" fill="#E86752" stroke="#1C355E" stroke-width="1" stroke-linejoin="round"/>
+</svg>`;}
+function rtccLogo(mode){const rev=mode.includes('rev');const formal=mode.includes('formal');const h=formal?40:32;const col=rev?'#ffffff':'var(--navy)';const fs=formal?18:14.5;return `<span class="logo" style="display:inline-flex;align-items:center;gap:10px">${rtccMark(h)}<span style="font-family:var(--f-head);font-weight:700;font-size:${fs}px;line-height:1.03;color:${col};letter-spacing:-.005em">Read Together<br>Charter Collective</span></span>`;}
+
 /* ---------------- DATA (illustrative) ---------------- */
 const ORGS=[
  {id:'alder',name:'Alder Charter Schools',lead:'Dana Whitfield',schools:['Alder Elementary','Alder Prep','Alder North'],agree:'Signed · Aug 2025'},
@@ -308,16 +322,16 @@ const STRATEGY={
  aspen:{goal:'Improve proficiency 14 points, focused on early grades',primary:'Grades 3–4 below benchmark',secondary:'Students receiving Tier 3 support',focus:['Foundational skills bootcamp','Weekly data huddles','Interventionist capacity building']}
 };
 const NOTES=[
- {orgId:'alder',date:'Jun 24, 2026',author:'Jetta Donovan',note:'Strong BOY prep. Flagged staffing gap for Tier 3 intervention at Alder North; revisit in COP #2.'},
- {orgId:'alder',date:'Apr 09, 2026',author:'Jetta Donovan',note:'Curriculum fidelity walkthrough completed. Grade 4 team needs pacing support.'},
- {orgId:'birch',date:'Jun 18, 2026',author:'Jetta Donovan',note:'Agreement signed. Data lead identified; onboarding to the upload template scheduled.'},
- {orgId:'cedar',date:'Jul 02, 2026',author:'Max Ferrante',note:'Four schools now on a single screener — simplifies the crosswalk considerably.'},
- {orgId:'maple',date:'Jun 30, 2026',author:'Max Ferrante',note:'Agreement still pending with counsel. Blocking first submission; escalate if not resolved by Aug.'},
- {orgId:'willow',date:'Jul 08, 2026',author:'Johanna Reyes',note:'Multilingual-learner focus is well developed. Good candidate to present at a COP.'},
- {orgId:'juniper',date:'May 21, 2026',author:'Sarah Kim',note:'Highest proficiency in the collective; interested in stretch goals for exceeding band.'},
- {orgId:'aspen',date:'Jul 11, 2026',author:'Sarah Kim',note:'Agreement pending. Early-grades focus aligns well with PL partner scope.'}
+ {orgId:'alder',date:'Jun 24, 2026',author:'Jeta Donovan',note:'Strong BOY prep. Flagged staffing gap for Tier 3 intervention at Alder North; revisit in COP #2.'},
+ {orgId:'alder',date:'Apr 09, 2026',author:'Jeta Donovan',note:'Curriculum fidelity walkthrough completed. Grade 4 team needs pacing support.'},
+ {orgId:'birch',date:'Jun 18, 2026',author:'Jeta Donovan',note:'Agreement signed. Data lead identified; onboarding to the upload template scheduled.'},
+ {orgId:'cedar',date:'Jul 02, 2026',author:'Max Milliken',note:'Four schools now on a single screener — simplifies the crosswalk considerably.'},
+ {orgId:'maple',date:'Jun 30, 2026',author:'Max Milliken',note:'Agreement still pending with counsel. Blocking first submission; escalate if not resolved by Aug.'},
+ {orgId:'willow',date:'Jul 08, 2026',author:'Jehanna Axelrod',note:'Multilingual-learner focus is well developed. Good candidate to present at a COP.'},
+ {orgId:'juniper',date:'May 21, 2026',author:'Yaneli Rubio',note:'Highest proficiency in the collective; interested in stretch goals for exceeding band.'},
+ {orgId:'aspen',date:'Jul 11, 2026',author:'Yaneli Rubio',note:'Agreement pending. Early-grades focus aligns well with PL support scope.'}
 ];
-const CPRL_STAFF=[{id:'jetta',name:'Jetta Donovan',charters:['alder','birch']},{id:'max',name:'Max Ferrante',charters:['cedar','maple']},{id:'johanna',name:'Johanna Reyes',charters:['willow']},{id:'sarah',name:'Sarah Kim',charters:['juniper','aspen']}];
+const CPRL_STAFF=[{id:'jetta',name:'Jeta Donovan',charters:['alder','birch']},{id:'max',name:'Max Milliken',charters:['cedar','maple']},{id:'johanna',name:'Jehanna Axelrod',charters:['willow']},{id:'sarah',name:'Yaneli Rubio',charters:['juniper','aspen']}];
 const COACH_NAMES=['A. Rivera','B. Osei','C. Nguyen','D. Patel','E. Brooks','F. Santos','G. Ahmed','H. Cole','J. Marsh','K. Idris'];
 function coachesFor(vid){const off=vid==='readfirst'?0:5;const schools=[];vendorById(vid).charters.forEach(oid=>orgById(oid).schools.forEach(s=>schools.push({orgId:oid,orgName:orgById(oid).name,school:s})));const coaches=[];let ci=0;for(let i=0;i<schools.length;i+=2){coaches.push({id:vid+'-c'+ci,name:COACH_NAMES[off+ci],schools:schools.slice(i,i+2)});ci++;}return coaches;}
 
@@ -390,8 +404,9 @@ const ANN=[
 const state={role:null,orgId:'alder',vendorId:'readfirst',vendorRole:'pm',coachId:null,pm:'all',asmt:'screener',focusOrg:null,cycle:'MOY',view:null,filters:{school:'all',grade:'all',cat:'all'},calType:'all'};
 const ROLE_META={
  charter:{label:'Charter organization',badge:'#0070B9',desc:'Upload your data each cycle and monitor how your own schools are performing.',li:['Your schools & enrollment','Achievement, growth & the matrix','Your PL sessions & calendar']},
- vendor:{label:'PL vendor',badge:'#4F748B',desc:'See how the charters you serve are progressing, and manage your sessions.',li:['Project-manager & coach views','Site-visit & observation logs','Achievement across your schools']},
- staff:{label:'RTCC staff',badge:'#E86752',desc:'See the whole consortium, track submissions, and coordinate the work.',li:['Consortium roll-up & every org','Submission & agreement tracking','Screeners, practice & vendors']}
+ vendor:{label:'PL vendor',badge:'#4F748B',desc:'Project-manager view: track how the charters you serve are progressing, and manage your sessions.',li:['Your charters & schools','Sessions & site visits','Achievement across your schools']},
+ coach:{label:'PL coach',badge:'#6D345F',desc:'Focus on the schools you personally coach, and log your observations.',li:['Your assigned schools','Observation log','Achievement & growth for your schools']},
+ staff:{label:'RTCC staff',badge:'#E86752',desc:'See the whole collective, track submissions, and coordinate the work.',li:['Collective roll-up & every org','Submission & agreement tracking','Screeners, practice & vendors']}
 };
 const NAVS={
  charter:[['home','home','Home'],['schools','building','My schools'],['strategy','book','Literacy strategy'],['upload','upload','Upload & submissions'],['achievement','bars','Achievement'],['growth','grid','Growth & matrix'],['screeners','gauge','Screeners'],['cif','users','Teacher practice'],['calendar','cal','Calendar'],['resources','folder','Resources'],['account','users','My account']],
@@ -405,12 +420,12 @@ function renderHome(){
   const totalSchools=ORGS.reduce((a,o)=>a+o.schools.length,0);
   const upcoming=EVENTS.slice(0,4);
   const feats=[['upload','#0070B9','Submit data securely','A fixed template with validation at the door. You hold the student key; we only receive de-identified records.'],
-    ['bars','#00A0DD','Monitor achievement','Proficiency by school, grade and teacher category — for your own schools or the whole consortium.'],
+    ['bars','#00A0DD','Monitor achievement','Proficiency by school, grade and teacher category — for your own schools or the whole collective.'],
     ['grid','#E86752','See real growth','Movement between bands and the growth-within-achievement matrix, once matched IDs are in place.'],
     ['cal','#4F748B','Coordinate the work','A shared calendar of sessions, screening windows and submission deadlines in one place.']];
   document.getElementById('home').innerHTML=`
   <header class="site-head">
-    <div style="display:flex;align-items:center;gap:14px">${cprlLogo('informal')}<span class="cobrand">Read Together Charter Collective<br>in partnership with Columbia University</span></div>
+    <div style="display:flex;align-items:center;gap:14px">${rtccLogo('informal')}<span class="cobrand">In partnership with Columbia University · CPRL</span></div>
     <nav class="navlinks"><a onclick="document.querySelector('.strip').scrollIntoView({behavior:'smooth'})">About</a><a onclick="document.getElementById('login').scrollIntoView({behavior:'smooth'})">Partners</a><button class="btn-login" onclick="document.getElementById('login').scrollIntoView({behavior:'smooth'})">Partner login</button></nav>
   </header>
   <section class="hero"><div class="hero-inner">
@@ -418,7 +433,7 @@ function renderHome(){
       <h1>Evidence-based literacy, <span class="accent">measured</span> across the charter sector.</h1>
       <p class="lead">One place for charter organizations and their professional-learning partners to submit assessment data, watch student progress, and coordinate the work of improving reading.</p>
       <div class="cta-row"><button class="btn-primary" onclick="document.getElementById('login').scrollIntoView({behavior:'smooth'})">Enter the portal</button><button class="btn-out" onclick="document.querySelector('.strip').scrollIntoView({behavior:'smooth'})">What it does</button></div></div>
-    <div class="hero-card"><div class="hc-top"><div><div class="t">Consortium at a glance</div><div class="d">illustrative · current cycle</div></div>${cprlMark(26)}</div>
+    <div class="hero-card"><div class="hc-top"><div><div class="t">The collective at a glance</div><div class="d">illustrative · current cycle</div></div>${rtccMark(30)}</div>
       <div class="gradbar"></div>
       <div class="hc-body"><div class="mini-kpis">
         <div class="mini-kpi"><div class="v num">${ORGS.length}</div><div class="l">Charter organizations</div></div>
@@ -428,38 +443,39 @@ function renderHome(){
       </div></div></div>
   </div></section>
   <section style="background:var(--navy)"><div class="gradbar"></div><div style="max-width:1120px;margin:0 auto;padding:24px 34px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center;color:#dbe7f0;font-family:var(--f-body);font-size:16px;text-align:center"><b style="color:#fff;font-family:var(--f-head)">Our theory of change:</b> strong shared data <span style="color:#6FB0C7">&rarr;</span> focused coaching &amp; practice <span style="color:#6FB0C7">&rarr;</span> measurable literacy gains across the collective.</div></section>
-  <section class="strip"><h2>Everything the consortium tracks, in one portal</h2>
+  <section class="strip"><h2>Everything the collective tracks, in one portal</h2>
     <p class="sub">Built so a school leader, a coaching partner, and the RTCC team each see exactly the slice that is theirs.</p>
     <div class="features">${feats.map(([ic,c,t,p])=>`<div class="feature"><div class="fic" style="background:${c}">${svgIcon(ic)}</div><h3>${t}</h3><p>${p}</p></div>`).join('')}</div></section>
   <section class="login-band" id="login"><div class="gradbar"></div><div class="login-inner">
     <h2>Sign in to your portal</h2><p class="sub">Choose your role to open the view built for it. (In the real platform this is a secure login; here, just click to explore.)</p>
-    <div class="roles">${Object.entries(ROLE_META).map(([k,m])=>`<div class="role"><div class="tag" style="background:${m.badge}">${k==='charter'?'C':k==='vendor'?'V':'S'}</div><h3>${m.label}</h3><p>${m.desc}</p><ul>${m.li.map(x=>`<li>${x}</li>`).join('')}</ul><button class="go" onclick="openSignIn('${k}')">Sign in &rarr;</button></div>`).join('')}</div></div></section>
-  <section class="strip" style="padding-top:44px"><h2>Upcoming across the consortium</h2><p class="sub">A single shared calendar of meetings, screening windows and deadlines.</p>
+    <div class="roles">${Object.entries(ROLE_META).map(([k,m])=>`<div class="role"><div class="tag" style="background:${m.badge}">${({charter:'C',vendor:'V',coach:'Co',staff:'S'})[k]}</div><h3>${m.label}</h3><p>${m.desc}</p><ul>${m.li.map(x=>`<li>${x}</li>`).join('')}</ul><button class="go" onclick="openSignIn('${k}')">Sign in &rarr;</button></div>`).join('')}</div></div></section>
+  <section class="strip" style="padding-top:44px"><h2>Upcoming across the charter collective</h2><p class="sub">A single shared calendar of meetings, screening windows and deadlines.</p>
     <div class="card" style="max-width:680px;margin:0 auto">${upcoming.map(agendaItem).join('')}</div></section>
   <footer class="site-foot"><div class="foot-inner">
-    <div style="max-width:320px">${cprlLogo('formal-rev')}<p style="font-family:var(--f-body);font-size:14px;color:#9aa5ac;margin-top:14px">A data platform for the Read Together Charter Collective, a project of the Center for Public Research and Leadership at Columbia University.</p></div>
+    <div style="max-width:320px">${rtccLogo('formal-rev')}<p style="font-family:var(--f-body);font-size:14px;color:#9aa5ac;margin-top:14px">A data platform for the Read Together Charter Collective, built with the Center for Public Research and Leadership at Columbia University.</p></div>
     <div class="fcol"><h4>Platform</h4><a onclick="document.getElementById('login').scrollIntoView({behavior:'smooth'})">Partner login</a><a>Achievement dashboards</a><a>Growth &amp; matrix</a><a>Calendar</a></div>
     <div class="fcol"><h4>For partners</h4><a>Data request template</a><a>Data-sharing agreement</a><a>Screener crosswalk</a><a>Resources</a></div>
     <div class="fcol"><h4>Contact</h4><a>RTCC team</a><a>Support</a><a>Privacy</a></div>
-  </div><div class="foot-note">Interactive prototype for discussion. All organizations, people, and figures shown are illustrative and not real.</div></footer>`;
+  </div><div class="foot-note">Interactive prototype for discussion. Charter organizations, schools, students and figures shown are illustrative.</div></footer>`;
 }
 
 /* ---------------- AUTH / SHELL / SCOPE ---------------- */
-function openSignIn(role){state._pending=role;const m=document.getElementById('signin');document.getElementById('siRole').textContent=ROLE_META[role].label;const em=role==='charter'?'data.lead@'+state.orgId+'.org':role==='vendor'?'pm@'+state.vendorId+'.org':'staff@cprl.columbia.edu';document.getElementById('siEmail').value=em;m.style.display='flex';}
+function openSignIn(role){state._pending=role;const m=document.getElementById('signin');document.getElementById('siRole').textContent=ROLE_META[role].label;const em=role==='charter'?'data.lead@'+state.orgId+'.org':role==='vendor'?'pm@'+state.vendorId+'.org':role==='coach'?'coach@'+state.vendorId+'.org':'team@rtcc.org';document.getElementById('siEmail').value=em;m.style.display='flex';}
 function closeSignIn(){document.getElementById('signin').style.display='none';}
-function doSignIn(){const r=state._pending;closeSignIn();login(r);}
-function login(role){state.role=role;state.focusOrg=null;state.filters={school:'all',grade:'all',cat:'all'};state.vendorRole='pm';state.pm='all';state.asmt='screener';state.coachId=null;state.view=NAVS[role][0][0];document.getElementById('home').style.display='none';document.getElementById('app').style.display='block';window.scrollTo(0,0);renderApp();}
+function doSignIn(){const r=state._pending;closeSignIn();if(r==='coach')login('vendor','coach');else login(r);}
+function login(role,subrole){state.role=role;state.focusOrg=null;state.filters={school:'all',grade:'all',cat:'all'};state.vendorRole=subrole==='coach'?'coach':'pm';state.pm='all';state.asmt='screener';state.coachId=null;state.view=NAVS[subrole==='coach'?'vendor_coach':role][0][0];document.getElementById('home').style.display='none';document.getElementById('app').style.display='block';window.scrollTo(0,0);renderApp();}
 function logout(){document.getElementById('app').style.display='none';document.getElementById('home').style.display='block';window.scrollTo(0,0);}
 function renderApp(){
-  const m=ROLE_META[state.role];
-  document.getElementById('sideBrand').innerHTML=cprlLogo('informal-rev');
+  const isCoach=state.role==='vendor'&&state.vendorRole==='coach';
+  const m=isCoach?ROLE_META.coach:ROLE_META[state.role];
+  document.getElementById('sideBrand').innerHTML=rtccLogo('informal-rev');
   document.getElementById('roleBadge').textContent=m.label;document.getElementById('roleBadge').style.background=m.badge;
   const sel=document.getElementById('entitySel');
   if(state.role==='charter'){sel.style.display='';sel.innerHTML=ORGS.map(o=>`<option value="${o.id}" ${o.id===state.orgId?'selected':''}>${o.name}</option>`).join('');}
   else if(state.role==='vendor'){sel.style.display='';sel.innerHTML=VENDORS.map(v=>`<option value="${v.id}" ${v.id===state.vendorId?'selected':''}>${v.name}</option>`).join('');}
   else sel.style.display='none';
   const sr=document.getElementById('subrole');
-  if(state.role==='vendor'){const coaches=coachesFor(state.vendorId);if(state.vendorRole==='coach'&&!coaches.find(c=>c.id===state.coachId))state.coachId=coaches[0].id;sr.innerHTML=`<span class="seg" style="margin-left:6px"><button class="${state.vendorRole==='pm'?'on':''}" onclick="setVendorRole('pm')">Project mgr</button><button class="${state.vendorRole==='coach'?'on':''}" onclick="setVendorRole('coach')">Coach</button></span>`+(state.vendorRole==='coach'?`<select style="margin-left:6px" onchange="state.coachId=this.value;renderApp()">${coaches.map(c=>`<option value="${c.id}" ${c.id===state.coachId?'selected':''}>${c.name}</option>`).join('')}</select>`:'');}else sr.innerHTML='';
+  if(isCoach){const coaches=coachesFor(state.vendorId);if(!coaches.find(c=>c.id===state.coachId))state.coachId=coaches[0].id;sr.innerHTML=`<span style="font-size:11px;color:var(--faint);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin:0 4px 0 6px">Coach</span><select onchange="state.coachId=this.value;renderApp()">${coaches.map(c=>`<option value="${c.id}" ${c.id===state.coachId?'selected':''}>${c.name}</option>`).join('')}</select>`;}else sr.innerHTML='';
   const navKey=(state.role==='vendor'&&state.vendorRole==='coach')?'vendor_coach':state.role;
   document.getElementById('nav').innerHTML=NAVS[navKey].map(([k,ic,lab])=>`<a class="${k===state.view?'active':''}" onclick="go('${k}')">${svgIcon(ic)}${lab}</a>`).join('');
   document.getElementById('foot').innerHTML='RTCC Data Platform &middot; interactive prototype &middot; illustrative data only.';
@@ -485,7 +501,7 @@ function filterBar(o){let h='<div class="toolbar">'+cycleSeg();if(o.pm&&state.ro
   if(o.org&&state.role!=='charter'){const orgs=scopeOrgs();h+=`<div class="filter"><label>Organization</label><select onchange="state.focusOrg=this.value==='all'?null:this.value;state.filters.school='all';renderApp()"><option value="all">All</option>${orgs.map(x=>`<option value="${x}" ${state.focusOrg===x?'selected':''}>${orgById(x).name}</option>`).join('')}</select></div>`;}
   if(o.school){const sv=state.filters.school;state.filters.school='all';const schs=[...new Set(currentSchools().map(s=>s.school))];state.filters.school=sv;h+=`<div class="filter"><label>School</label><select onchange="state.filters.school=this.value;renderApp()"><option value="all">All schools</option>${schs.map(s=>`<option value="${s}" ${state.filters.school===s?'selected':''}>${s}</option>`).join('')}</select></div>`;}
   if(o.grade)h+=`<div class="filter"><label>Grade</label><select onchange="state.filters.grade=this.value;renderApp()"><option value="all">All grades</option>${GRADES.map(g=>`<option value="${g}" ${state.filters.grade==g?'selected':''}>Grade ${g}</option>`).join('')}</select></div>`;
-  if(o.cat)h+=`<div class="filter"><label>Teacher category (CIF)</label><select onchange="state.filters.cat=this.value;renderApp()"><option value="all">All teachers</option>${CATS.map(c=>`<option value="${c.n}" ${state.filters.cat===c.n?'selected':''}>${c.n}</option>`).join('')}</select></div>`;
+  if(o.cat)h+=`<div class="filter"><label>Teacher category (CICF)</label><select onchange="state.filters.cat=this.value;renderApp()"><option value="all">All teachers</option>${CATS.map(c=>`<option value="${c.n}" ${state.filters.cat===c.n?'selected':''}>${c.n}</option>`).join('')}</select></div>`;
   return h+'</div>';}
 function stackedBar(d){const t=d.total||1;const w=x=>(x/t*100).toFixed(1)+'%';return `<div class="bar"><span style="width:${w(d.atRisk)};background:var(--atrisk)"></span><span style="width:${w(d.meeting)};background:var(--meeting)"></span><span style="width:${w(d.exceeding)};background:var(--exceeding)"></span></div>`;}
 function legend(){return `<div class="legend"><span><i style="background:var(--atrisk)"></i>At risk</span><span><i style="background:var(--meeting)"></i>Meeting</span><span><i style="background:var(--exceeding)"></i>Exceeding</span></div>`;}
@@ -514,7 +530,7 @@ function vHome(){if(state.role==='charter')return charterHome();if(state.role===
 
 /* ---------------- CHARTER ---------------- */
 function charterHome(){
-  const o=orgById(state.orgId);setHead('Charter organization',o.name,'Your consortium home.');
+  const o=orgById(state.orgId);setHead('Charter organization',o.name,'Your collective home.');
   const schools=o.schools.map(s=>({orgId:o.id,orgName:o.name,school:s}));
   const cur=aggScope(schools,state.cycle,'all','all'),boy=aggScope(schools,'BOY','all','all');
   const up=eventsForRole().filter(e=>e.date>=TODAY).slice(0,4);const submitted=state.cycle==='BOY';
@@ -556,11 +572,11 @@ function vUpload(){
   <div class="card"><div class="card-h"><h3>Submission history</h3></div><table><thead><tr><th>Cycle</th><th>Status</th><th>Submitted</th><th class="r">Records</th><th>Validation</th></tr></thead><tbody>${hist.map(r=>`<tr><td><b>${r[0]}</b></td><td><span class="pill ${r[5]}">${r[1]}</span></td><td>${r[2]}</td><td class="r num">${r[3]}</td><td>${r[4]}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function downloadTemplate(){const header=['student_id','org','school','grade','instructor','cycle','assessment','score','band'];const ex=[['S-10428',state.orgId,orgById(state.orgId).schools[0],'3','T-207',state.cycle,'Screener X','','At risk'],['S-10429',state.orgId,orgById(state.orgId).schools[0],'3','T-207',state.cycle,'Screener X','','Meeting']];const csv=[header.join(','),...ex.map(r=>r.join(','))].join('\n');const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='RTCC_upload_template_'+state.cycle+'.csv';a.click();}
-function runValidate(){document.getElementById('valout').innerHTML=`<div style="margin-top:14px"><div class="valrow"><span class="mk ok">&#10003;</span><div><b>All 9 required columns present</b> and in order.</div></div><div class="valrow"><span class="mk ok">&#10003;</span><div><b>412 rows read.</b> grade, score and cycle are the right types.</div></div><div class="valrow"><span class="mk warn">!</span><div><b>3 rows: band not allowed.</b> Rows 118, 233, 402 use “Approaching”.</div></div><div class="valrow"><span class="mk warn">!</span><div><b>1 row: missing instructor.</b> Row 87 (needed later for CIF matching).</div></div><div class="valrow"><span class="mk bad">&#10007;</span><div><b>2 rows: duplicate student_id this cycle.</b> S-10871 appears twice.</div></div><div class="muted" style="margin-top:10px;font-size:13px">Illustrative — fix the 3 flags and re-upload; the rest would be accepted.</div></div>`;}
+function runValidate(){document.getElementById('valout').innerHTML=`<div style="margin-top:14px"><div class="valrow"><span class="mk ok">&#10003;</span><div><b>All 9 required columns present</b> and in order.</div></div><div class="valrow"><span class="mk ok">&#10003;</span><div><b>412 rows read.</b> grade, score and cycle are the right types.</div></div><div class="valrow"><span class="mk warn">!</span><div><b>3 rows: band not allowed.</b> Rows 118, 233, 402 use “Approaching”.</div></div><div class="valrow"><span class="mk warn">!</span><div><b>1 row: missing instructor.</b> Row 87 (needed later for CICF matching).</div></div><div class="valrow"><span class="mk bad">&#10007;</span><div><b>2 rows: duplicate student_id this cycle.</b> S-10871 appears twice.</div></div><div class="muted" style="margin-top:10px;font-size:13px">Illustrative — fix the 3 flags and re-upload; the rest would be accepted.</div></div>`;}
 
 /* ---------------- VENDOR ---------------- */
 function vendorHome(){
-  const v=vendorById(state.vendorId);setHead('PL vendor',v.name,'Your consortium home.');
+  const v=vendorById(state.vendorId);setHead('PL vendor',v.name,'Your collective home.');
   const schools=v.charters.flatMap(oid=>orgById(oid).schools.map(s=>({orgId:oid,orgName:orgById(oid).name,school:s})));
   const cur=aggScope(schools,state.cycle,'all','all'),boy=aggScope(schools,'BOY','all','all');
   const mine=EVENTS.filter(e=>e.type==='PL'&&e.vendorId===v.id);const done=mine.filter(e=>e.date<TODAY).length;
@@ -592,12 +608,12 @@ function vSessions(){
 
 /* ---------------- STAFF ---------------- */
 function staffHome(){
-  setHead('RTCC staff','Consortium home','The whole consortium this cycle.');
+  setHead('RTCC staff','Collective home','The whole collective this cycle.');
   const all=ORGS.flatMap(o=>o.schools.map(s=>({orgId:o.id,orgName:o.name,school:s})));
   const cur=aggScope(all,state.cycle,'all','all'),boy=aggScope(all,'BOY','all','all');
   const submitted=state.cycle==='BOY'?ORGS.length:state.cycle==='MOY'?5:0;const up=EVENTS.filter(e=>e.date>=TODAY).slice(0,4);
   V().innerHTML=`${cycleSeg()}<div class="section-gap"></div>
-  <div class="grid kpis">${kpi('Organizations',ORGS.length,'in the consortium')}${kpi('Students assessed',cur.total.toLocaleString(),state.cycle+' cycle')}${kpi('% proficient',pctProf(cur)+'%',deltaFoot(pctProf(cur)-pctProf(boy),'since BOY'))}${kpi(state.cycle+' submissions',submitted+' / '+ORGS.length,'organizations reported')}</div><div class="section-gap"></div>
+  <div class="grid kpis">${kpi('Organizations',ORGS.length,'in the collective')}${kpi('Students assessed',cur.total.toLocaleString(),state.cycle+' cycle')}${kpi('% proficient',pctProf(cur)+'%',deltaFoot(pctProf(cur)-pctProf(boy),'since BOY'))}${kpi(state.cycle+' submissions',submitted+' / '+ORGS.length,'organizations reported')}</div><div class="section-gap"></div>
   <div class="grid" style="grid-template-columns:1.5fr 1fr">
     <div class="card"><div class="card-h"><h3>Proficiency by organization</h3><span class="hint">${state.cycle}</span></div>${ORGS.map(o=>barRow(o.name,orgAgg(o.id,state.cycle,'all','all'))).join('')}${legend()}</div>
     <div><div class="card"><div class="card-h"><h3>Announcements</h3></div>${ANN.map(a=>`<div class="ann"><span class="adot" style="background:${a.c}"></span><div><div class="at">${a.t}</div><div class="am">${a.m}</div></div></div>`).join('')}</div><div class="section-gap"></div><div class="card"><div class="card-h"><h3>Upcoming</h3></div>${up.map(agendaItem).join('')}</div></div>
@@ -660,16 +676,16 @@ function vScreeners(){
   <div class="card"><div class="card-h"><h3>Screener comparability framework</h3><span class="hint">8 tools · 4 administration families</span></div><table><thead><tr><th>Screener</th><th>Administration family</th><th>Native reporting</th><th>Maps to common band</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function vCif(){
-  setHead(ROLE_META[state.role].label,'Teacher practice (CIF)','Where teachers sit on the CIF observation framework, and how practice tracks with outcomes.');
+  setHead(ROLE_META[state.role].label,'Teacher practice (CICF)','Where teachers sit on the CICF observation framework, and how practice tracks with outcomes.');
   const schools=currentSchools();const cif=cifDist(schools);const maxC=Math.max(1,...Object.values(cif.counts));
   const bars=CATS.map(c=>{const v=cif.counts[c.n];return `<div class="barrow"><div class="bl">${c.n}</div><div class="bar"><span style="width:${v/maxC*100}%;background:${c.color}"></span></div><div class="bv num">${v}</div></div>`;}).join('');
   const outc=CATS.map(c=>({n:c.n,color:c.color,p:pctProf(aggScope(schools,state.cycle,'all',c.n))}));
   const obars=outc.map(o=>`<div class="barrow"><div class="bl">${o.n}</div><div class="bar"><span style="width:${o.p}%;background:${o.color}"></span></div><div class="bv num">${o.p}%</div></div>`).join('');
-  V().innerHTML=`${filterBar({org:true,pm:true,school:true,grade:false,cat:false})}<div class="info" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span>Detailed teacher-observation results live on the <b>CIF platform</b>; this is a summary view. Open CIF for the full detail.</span><button class="btn ghost" onclick="alert('Prototype: opens the CIF observation platform.')">Open in CIF tool &rarr;</button></div><div class="section-gap"></div>
-  <div class="grid kpis" style="grid-template-columns:repeat(3,1fr)">${kpi('Teachers observed',cif.teachers,'in scope')}${kpi('Observations logged',cif.obs,'this year (CIF)')}${kpi('Proficient+ teachers',Math.round((cif.counts['Proficient']+cif.counts['Exemplary'])/cif.teachers*100)+'%','of those observed')}</div><div class="section-gap"></div>
+  V().innerHTML=`${filterBar({org:true,pm:true,school:true,grade:false,cat:false})}<div class="info" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span>Detailed teacher-observation results live on the <b>CICF platform</b>; this is a summary view. Open CICF for the full detail.</span><button class="btn ghost" onclick="alert('Prototype: opens the CICF observation platform.')">Open in CICF tool &rarr;</button></div><div class="section-gap"></div>
+  <div class="grid kpis" style="grid-template-columns:repeat(3,1fr)">${kpi('Teachers observed',cif.teachers,'in scope')}${kpi('Observations logged',cif.obs,'this year (CICF)')}${kpi('Proficient+ teachers',Math.round((cif.counts['Proficient']+cif.counts['Exemplary'])/cif.teachers*100)+'%','of those observed')}</div><div class="section-gap"></div>
   <div class="grid" style="grid-template-columns:1fr 1fr">
-    <div class="card"><div class="card-h"><h3>Teachers by CIF category</h3></div>${bars}</div>
-    <div class="card"><div class="card-h"><h3>Student proficiency by teacher category</h3><span class="hint">${state.cycle}</span></div>${obars}<div class="info" style="margin-top:10px">This link exists only because each student record carries a literacy-instructor tag — captured now so outcomes can be matched to CIF observations later.</div></div>
+    <div class="card"><div class="card-h"><h3>Teachers by CICF category</h3></div>${bars}</div>
+    <div class="card"><div class="card-h"><h3>Student proficiency by teacher category</h3><span class="hint">${state.cycle}</span></div>${obars}<div class="info" style="margin-top:10px">This link exists only because each student record carries a literacy-instructor tag — captured now so outcomes can be matched to CICF observations later.</div></div>
   </div>`;
 }
 function vCalendar(){
@@ -681,7 +697,7 @@ function vCalendar(){
   <div class="grid" style="grid-template-columns:1.1fr 1fr">
     <div class="card"><div class="card-h"><h3>September 2026</h3><span class="hint">start of year</span></div>${grid}<div class="legend" style="margin-top:12px">${Object.entries(EV_TYPE).map(([k,t])=>`<span><i style="background:${t.color}"></i>${t.label}</span>`).join('')}</div></div>
     <div class="card"><div class="card-h"><h3>Upcoming</h3><span class="hint">${upcoming.length} events</span></div>${upcoming.slice(0,8).map(agendaItem).join('')||'<p class="muted">Nothing matches this filter.</p>'}</div>
-  </div><div class="section-gap"></div><div class="info" style="font-size:13px">Read-only calendar view. Consortium <b>event management</b> is planned to integrate with Cvent, and <b>contacts &amp; communications</b> with HubSpot.</div>`;
+  </div><div class="section-gap"></div><div class="info" style="font-size:13px">Read-only calendar view. Collective <b>event management</b> is planned to integrate with Cvent, and <b>contacts &amp; communications</b> with HubSpot.</div>`;
 }
 function monthGrid(year,month,events){
   const first=new Date(year,month,1);const startDow=first.getDay();const days=new Date(year,month+1,0).getDate();
@@ -692,7 +708,7 @@ function monthGrid(year,month,events){
 }
 function vResources(){
   setHead(ROLE_META[state.role].label,'Resources','Templates, agreements and shared materials.');
-  const docs=[['Data request template (CSV)','Template','Jul 2026','p-blue'],['Data-sharing agreement','Agreement','Aug 2025','p-green'],['Literacy strategy document','Strategy','Sep 2025','p-blue'],['Screener crosswalk brief','Reference','Jun 2026','p-purple'],['CIF observation rubric','Reference','Sep 2025','p-purple'],['Site-visit / observation logs','Log','Ongoing','p-gray'],['Comprehension routines pack','PL material','Nov 2025','p-amber'],['MTSS & intervention planning guide','PL material','Oct 2025','p-amber'],['Consortium data privacy overview','Policy','Aug 2025','p-gray']];
+  const docs=[['Data request template (CSV)','Template','Jul 2026','p-blue'],['Data-sharing agreement','Agreement','Aug 2025','p-green'],['Literacy strategy document','Strategy','Sep 2025','p-blue'],['Screener crosswalk brief','Reference','Jun 2026','p-purple'],['CICF observation rubric','Reference','Sep 2025','p-purple'],['Site-visit / observation logs','Log','Ongoing','p-gray'],['Comprehension routines pack','PL material','Nov 2025','p-amber'],['MTSS & intervention planning guide','PL material','Oct 2025','p-amber'],['Collective data privacy overview','Policy','Aug 2025','p-gray']];
   let own='';
   if(state.role==='charter'){const o=orgById(state.orgId);
     const mine=[['BOY 2025–26 screener submission','Upload','Sep 27, 2025','p-blue'],['Data-sharing agreement — signed copy','Agreement',o.agree.startsWith('Signed')?o.agree.replace('Signed · ',''):'Pending','p-green'],[o.name+' literacy strategy','Strategy','Sep 2025','p-purple'],['EOY 2024–25 screener submission','Upload','Jun 10, 2025','p-blue']];
@@ -706,7 +722,14 @@ function curCoach(){const cs=coachesFor(state.vendorId);return cs.find(c=>c.id==
 function vendorForOrg(oid){return VENDORS.find(v=>v.charters.includes(oid));}
 function emailize(name,dom){return name.toLowerCase().replace(/[^a-z ]/g,'').split(' ').filter(Boolean).join('.')+'@'+dom+'.org';}
 function contactsFor(o){const pool=[['Literacy lead','Priya Shah'],['Principal liaison','Marcus Webb'],['Data coordinator','Elena Ruiz']];const r=hashStr(o.id);const picks=[{role:'RTCC data lead',name:o.lead}];for(let i=0;i<2;i++){const p=pool[(r+i)%pool.length];picks.push({role:p[0],name:p[1]});}return picks.map(p=>({role:p.role,name:p.name,email:emailize(p.name,o.id)}));}
-function supportCard(o){const v=vendorForOrg(o.id);const nc=v?coachesFor(v.id).filter(c=>c.schools.some(s=>s.orgId===o.id)).length:0;const pm=CPRL_STAFF.find(s=>s.charters.includes(o.id));return `<div class="card"><div class="card-h"><h3>Your support</h3></div><div class="ann"><span class="adot" style="background:#0070B9"></span><div><div class="at">Funding support · active</div><div class="am">PCLB &amp; Robertson Foundation</div></div></div><div class="ann"><span class="adot" style="background:#00A0DD"></span><div><div class="at">PL partner</div><div class="am">${v?v.name:'—'} · ${nc} coach${nc===1?'':'es'} assigned</div></div></div><div class="ann"><span class="adot" style="background:#4F748B"></span><div><div class="at">Portfolio manager</div><div class="am">${pm?pm.name:'—'}</div></div></div></div>`;}
+function supportCard(o){const v=vendorForOrg(o.id);const nc=v?coachesFor(v.id).filter(c=>c.schools.some(s=>s.orgId===o.id)).length:0;const pm=CPRL_STAFF.find(s=>s.charters.includes(o.id));
+  const org=orgById(o.id);const nsch=org.schools.length;
+  const enr=org.schools.reduce((a,s)=>a+enrollment(o.id,s),0);
+  const funding=enr<1000?100000:enr<4000?250000:500000;
+  const schoolsArr=org.schools.map(s=>({orgId:o.id,orgName:org.name,school:s}));
+  const boyProf=pctProf(aggScope(schoolsArr,'BOY','all','all'));
+  const daysPerSchool=boyProf<45?25:boyProf<60?20:15;
+  return `<div class="card"><div class="card-h"><h3>Your support</h3><span class="hint">illustrative</span></div><div class="ann"><span class="adot" style="background:#0070B9"></span><div><div class="at">General operating support · active</div><div class="am">PCLB · $${funding.toLocaleString()} / year <span style="color:var(--faint)">(by enrollment)</span></div></div></div><div class="ann"><span class="adot" style="background:#00A0DD"></span><div><div class="at">PL Support</div><div class="am">${v?v.name:'—'} · ${nc} coach${nc===1?'':'es'} · ${daysPerSchool} PL days / school <span style="color:var(--faint)">(${daysPerSchool*nsch} total)</span></div></div></div><div class="ann"><span class="adot" style="background:#4F748B"></span><div><div class="at">Portfolio manager</div><div class="am">${pm?pm.name:'—'}</div></div></div></div>`;}
 function taskCard(o){const signed=o.agree.startsWith('Signed');const tasks=[['Submit MOY screener data','Jan 30, 2027','p-amber','Due soon'],['Confirm team members & contacts','Ongoing','p-blue','Action needed'],['Review MOY dashboard with school leads','Feb 2027','p-gray','Upcoming'],['Sign data-sharing agreement',signed?'Complete':'Overdue',signed?'p-green':'p-red',signed?'Done':'Action needed']];return `<div class="card"><div class="card-h"><h3>Task tracker</h3><span class="hint">deadlines &amp; reminders</span></div><table><thead><tr><th>Task</th><th>Due</th><th></th></tr></thead><tbody>${tasks.map(t=>`<tr><td><b>${t[0]}</b></td><td>${t[1]}</td><td class="r"><span class="pill ${t[2]}">${t[3]}</span></td></tr>`).join('')}</tbody></table></div>`;}
 function teamCard(o){const cs=contactsFor(o);return `<div class="card"><div class="card-h"><h3>Team &amp; contacts</h3><span class="hint">HubSpot sync planned</span></div><table><thead><tr><th>Name</th><th>Role</th><th>Email</th></tr></thead><tbody>${cs.map(c=>`<tr><td><b>${c.name}</b></td><td>${c.role}</td><td class="muted">${c.email}</td></tr>`).join('')}</tbody></table><div style="margin-top:12px"><button class="btn ghost" onclick="alert('Prototype: add or edit a team member here.')">+ Add team member</button></div></div>`;}
 function litToolsCard(o){const scr=[...new Set(o.schools.map(s=>screenerFor(o.id,s).n))];const cg=CURRIC_BY_GRADE[o.id]||{};return `<div class="card"><div class="card-h"><h3>Literacy tools</h3><span class="hint">from your intake</span></div><table style="margin-bottom:10px"><thead><tr><th>Grade band</th><th>Core curriculum</th></tr></thead><tbody>${Object.entries(cg).map(([g,c])=>`<tr><td><b>Grades ${g}</b></td><td>${c}</td></tr>`).join('')}</tbody></table><div class="ann"><span class="adot" style="background:#E86752"></span><div><div class="at">Intervention</div><div class="am">${INTERVENTIONS[o.id]||'—'}</div></div></div><div class="ann"><span class="adot" style="background:#4F748B"></span><div><div class="at">Screener(s) in use</div><div class="am">${scr.join(', ')}</div></div></div></div>`;}
@@ -773,7 +796,7 @@ function vAccount(){
   const isCharter=state.role==='charter',isVendor=state.role==='vendor';
   const org=isCharter?orgById(state.orgId):null;const ven=isVendor?vendorById(state.vendorId):null;
   const coach=(isVendor&&state.vendorRole==='coach')?curCoach():null;
-  const name=coach?coach.name:isCharter?org.lead:isVendor?ven.lead:'Jetta Donovan';
+  const name=coach?coach.name:isCharter?org.lead:isVendor?ven.lead:'Jeta Donovan';
   const orgName=isCharter?org.name:isVendor?ven.name:'CPRL · Read Together Charter Collective';
   const email=isCharter?emailize(name,state.orgId):isVendor?emailize(name,state.vendorId):'jetta.donovan@cprl.columbia.edu';
   const roleLabel=coach?'PL vendor · coach':isVendor?'PL vendor · project manager':ROLE_META[state.role].label;
